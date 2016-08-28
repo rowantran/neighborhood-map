@@ -9,7 +9,7 @@ var oauth_token_secret = '8IcYvPXWFZ81q_FkI_QUIkRv2EE';
 
 function initMap() {
     map = new google.maps.Map($('#map')[0], {
-        center: {lat: 37.226874, lng: -121.776858},
+        center: {lat: 37.229103, lng: -121.773974},
         zoom: 16
     });
 
@@ -93,8 +93,11 @@ function ready() {
         })
         .done(function(data, textStatus, jqXHR) {
             var business = data.businesses[0];
-            var yelpInfo = '<b>' + business.name + '</b>' +
-                '<br> Rating: ' + business.rating + '/5';
+            var yelpInfo = '<p class="yelp-info"><b>' + business.name + '</b>' +
+                '<br><img src="' + business.rating_img_url + '">' + 
+                '<br><img class="yelp-img" src="' + business.image_url + '">' +
+                '<br>' + business.review_count + ' reviews on <a target="_blank" href="' +
+                business.url + '">Yelp</a>';
             info.setContent(yelpInfo);
             info.open(map, marker);
             info.marker = marker;
@@ -124,10 +127,10 @@ function ready() {
         var self = this;
 
         self.markerData = [
-            [37.223869, -121.783142, 'Julia Baldwin Elementary School'],
-            [37.226729, -121.774046, 'Santa Teresa Village Shopping Center'],
+            [37.225556, -121.773208, 'Santa Teresa Academy of Music and Dance'],
+            [37.229776, -121.778005, 'DMV Santa Teresa'],
             [37.225473, -121.768037, 'Martin Murphy Middle School'],
-            [37.227626, -121.769455, 'Los Paseos Elementary School'],
+            [37.231434, -121.776146, "Gold's Gym"],
             [37.228744, -121.776642, 'American Kickboxing Academy']
         ];
 

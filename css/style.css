@@ -1,3 +1,11 @@
 #map {
     height: 90%;
 }
+
+p.yelp-info {
+    text-align: center;
+}
+
+.yelp-img {
+    padding: 10px;
+}
