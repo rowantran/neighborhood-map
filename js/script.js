@@ -1,5 +1,6 @@
 var map;
 var infowindow;
+var vm;
 
 var oauth_consumer_key = 'VAXC8AUEzlaAhwzlweutMQ';
 var oauth_token = 'b80Zp7I7NH8JdauereVd1lggnEA5t0gu';
@@ -35,6 +36,9 @@ var generateNonce = function(length) {
 
 function ready() {
     info = new google.maps.InfoWindow();
+    info.addListener('closeclick', function() {
+        this.marker.setAnimation(null);
+    });
 
     function showInfo(marker) {
         var httpMethod = 'GET';
@@ -93,6 +97,7 @@ function ready() {
                 '<br> Rating: ' + business.rating + '/5';
             info.setContent(yelpInfo);
             info.open(map, marker);
+            info.marker = marker;
         });
     }
 
@@ -127,6 +132,26 @@ function ready() {
         ];
 
         self.markers = [];
+        for (var i = 0; i < self.markerData.length; i++) {
+            var marker = self.markerData[i];
+            self.markers.push(new Marker(marker[0], marker[1], marker[2]));
+        }
+
+
+        self.filter = ko.observable("");
+
+        self.filteredMarkers = ko.computed(function() {
+            var matches = [];
+            for (var i = 0; i < self.markers.length; i++) {
+                var marker = self.markers[i];
+                var nameFilter = marker.name.toLowerCase();
+                var filter = self.filter().toLowerCase();
+                if (nameFilter.indexOf(filter) !== -1) {
+                    matches.push(marker);
+                 }
+            }
+            return matches;
+        });
 
         self.openMarker = function(marker, event) {
             toggleBounce(marker.marker);
@@ -135,12 +160,8 @@ function ready() {
             listItem.addClass('active');
             $('.list-group-item').not(listItem).removeClass('active');            
         }
-
-        for (var i = 0; i < self.markerData.length; i++) {
-            var marker = self.markerData[i];
-            self.markers.push(new Marker(marker[0], marker[1], marker[2]));
-        }
     }
 
-    ko.applyBindings(new MarkersViewModel());
+    vm = new MarkersViewModel();
+    ko.applyBindings(vm);
 }
