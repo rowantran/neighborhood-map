@@ -2,10 +2,10 @@ var map;
 var infowindow;
 var vm;
 
-var oauth_consumer_key = 'VAXC8AUEzlaAhwzlweutMQ';
-var oauth_token = 'b80Zp7I7NH8JdauereVd1lggnEA5t0gu';
-var oauth_consumer_secret = 'CK2TxYFAp8Ht_qIlfnb1IUprPgI';
-var oauth_token_secret = '8IcYvPXWFZ81q_FkI_QUIkRv2EE';
+var OAUTH_CONSUMER_KEY = 'VAXC8AUEzlaAhwzlweutMQ';
+var OAUTH_TOKEN = 'b80Zp7I7NH8JdauereVd1lggnEA5t0gu';
+var OAUTH_CONSUMER_SECRET = 'CK2TxYFAp8Ht_qIlfnb1IUprPgI';
+var OAUTH_TOKEN_SECRET = '8IcYvPXWFZ81q_FkI_QUIkRv2EE';
 
 function initMap() {
     map = new google.maps.Map($('#map')[0], {
@@ -21,12 +21,15 @@ function toggleBounce(marker) {
         marker.setAnimation(null);
     } else {
         marker.setAnimation(google.maps.Animation.BOUNCE);
+        setTimeout(function() {
+            marker.setAnimation(null);
+        }, 3500);
     }
 }
 
 var generateNonce = function(length) {
-    var text = "";
-    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    var text = '';
+    var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     for (var i = 0; i < length; i++) {
         text += possible.charAt(Math.floor(Math.random() * possible.length));
     }
@@ -47,10 +50,10 @@ function ready() {
         var timestamp = Math.round(Date.now() / 1000);
     
         var auth = {
-            consumerKey : oauth_consumer_key,
-            consumerSecret : oauth_consumer_secret,
-            accessToken : oauth_token,
-            accessTokenSecret : oauth_token_secret,
+            consumerKey : OAUTH_CONSUMER_KEY,
+            consumerSecret : OAUTH_CONSUMER_SECRET,
+            accessToken : OAUTH_TOKEN,
+            accessTokenSecret : OAUTH_TOKEN_SECRET,
             serviceProvider : {
                 signatureMethod : "HMAC-SHA1"
             }
@@ -74,7 +77,7 @@ function ready() {
         parameters.push(['oauth_signature_method', 'HMAC-SHA1']);
 
         var message = {
-            'action' : 'https://api.yelp.com/v2/search',
+            'action' : yelpURL,
             'method' : 'GET',
             'parameters' : parameters
         };
@@ -101,6 +104,9 @@ function ready() {
             info.setContent(yelpInfo);
             info.open(map, marker);
             info.marker = marker;
+        })
+        .fail(function(data, textStats, jqXHR) {
+            $('#error').html('<div class="alert alert-danger">Failed to get data from Yelp.</div>');
         });
     }
 
@@ -151,8 +157,12 @@ function ready() {
                 var filter = self.filter().toLowerCase();
                 if (nameFilter.indexOf(filter) !== -1) {
                     matches.push(marker);
-                 }
+                    marker.marker.setVisible(true);
+                } else {
+                    marker.marker.setVisible(false);
+                }
             }
+
             return matches;
         });
 
