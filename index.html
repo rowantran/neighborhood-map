@@ -7,11 +7,11 @@
         <link rel="stylesheet" href="css/bootstrap-theme.min.css">
         <link rel="stylesheet" href="css/style.css">
 
+        <script type="text/javascript" src="js/script.js"></script>
         <script type="text/javascript" src="js/knockout-3.4.0.js"></script>
         <script type="text/javascript" src="js/jquery-3.1.0.min.js"></script>
         <script type="text/javascript" src="js/bootstrap.min.js"></script>
         <script type="text/javascript" src="js/oauth-signature.min.js"></script>
-        <script type="text/javascript" src="js/script.js"></script>
         <script type="text/javascript" src="js/OAuth.js"></script>
         <script type="text/javascript" src="js/SHA1.js"></script>
     </head>
@@ -46,6 +46,6 @@
             </div>
          </div>
 
-         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAUF0XpWkg0eCFcYiDX980dGVk1y6eYGVE&callback=initMap" async defer></script>
+         <script onerror="googleFail()" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAUF0XpWkg0eCFcYiDX980dGVk1y6eYGVE&callback=initMap" async defer></script>
     </body>
 </html>

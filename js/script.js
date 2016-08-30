@@ -36,6 +36,9 @@ var generateNonce = function(length) {
     return text;
 }
 
+function googleFail() {
+    $('#error').html('<div class="alert alert-danger">Failed to load Google Maps.</div>');
+}
 
 function ready() {
     info = new google.maps.InfoWindow();
